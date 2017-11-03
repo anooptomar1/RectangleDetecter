@@ -57,21 +57,30 @@
 }
 
 #pragma mark ----- Delegate Method -----
-- (void)getVideoCaptureUIImage:(UIImage *)captureUIImage ciImage:(CIImage *)captureCIImage{
+- (void)getVideoCaptureCIImage:(CIImage *)captureCIImage{
     
     /* Viewにカメラ画像を表示 */
     dispatch_async(dispatch_get_main_queue(), ^{
-        _imageView.image = captureUIImage;
+        _imageView.image = [UIImage imageWithCIImage:captureCIImage];
     });
+    
+    // 新しい画像サイズ
+    CGSize newSize = CGSizeMake(480, 640);
+    CGRect ciImageRect = captureCIImage.extent;
+    CGPoint scale = CGPointMake(newSize.width  / ciImageRect.size.width,
+                                newSize.height / ciImageRect.size.height);
+    
+    CIImage *resizeCIImage = [captureCIImage imageByApplyingTransform:CGAffineTransformMakeScale(scale.x,scale.y)];
     
     NSArray *pointArray = nil;
     if (trackingFlag == NO){
         
-        pointArray = [detectRectangle detectRectanglePointWithCIImage:captureCIImage frame:_imageView.frame];
+        pointArray = [detectRectangle detectRectanglePointWithCIImage:resizeCIImage frame:_imageView.frame];
     }
     else{
+        
         [trackRectangle setObservation:detectRectangle.observation];
-        pointArray = [trackRectangle trackRectanglePointWithCIImage:captureCIImage frame:_imageView.frame];
+        pointArray = [trackRectangle trackRectanglePointWithCIImage:resizeCIImage frame:_imageView.frame];
     }
     
     if (pointArray != nil){

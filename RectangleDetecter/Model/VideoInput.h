@@ -11,18 +11,17 @@
 #import <AVFoundation/AVFoundation.h>
 
 @protocol VideoInputDelegate
-- (void)getVideoCaptureUIImage:(UIImage *)captureUIImage ciImage:(CIImage *)captureCIImage;
+- (void)getVideoCaptureCIImage:(CIImage *)captureCIImage;
 @end
 
 
 @interface VideoInput : NSObject <AVCaptureVideoDataOutputSampleBufferDelegate>{
     
-    UIImage *captureUIImage;
     CIImage *captureCIImage;
 }
 
-@property (nonatomic, strong) AVCaptureSession* mySession;
-@property (nonatomic, strong) id<VideoInputDelegate> videoInputDelegate;
+@property (nonatomic, retain) AVCaptureSession* mySession;
+@property (nonatomic, retain) id<VideoInputDelegate> videoInputDelegate;
 
 - (void) setup;
 

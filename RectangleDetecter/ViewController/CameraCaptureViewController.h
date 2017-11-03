@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <SceneKit/SceneKit.h>
+#import <ARKit/ARKit.h>
 #import <Vision/Vision.h>
 
 #import "../Model/VideoInput.h"

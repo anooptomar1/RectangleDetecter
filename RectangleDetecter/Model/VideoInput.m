@@ -42,7 +42,7 @@
     _mySession = [[AVCaptureSession alloc] init];
     [_mySession addInput:inputDevice];
     [_mySession addOutput:outputData];
-    _mySession.sessionPreset = AVCaptureSessionPreset1280x720;
+    _mySession.sessionPreset = AVCaptureSessionPreset1920x1080;
     
     AVCaptureConnection *videoConnection = nil;
     
@@ -68,7 +68,7 @@
 - (void)captureOutput:(AVCaptureOutput *)output didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection{
     
     if ([self convertSampleBufferToImage:sampleBuffer]){
-        [_videoInputDelegate getVideoCaptureUIImage:captureUIImage ciImage:captureCIImage];
+        [_videoInputDelegate getVideoCaptureCIImage:captureCIImage];
     }
     
 }
@@ -82,23 +82,7 @@
     
     // CVPixelBufferRef -> CIImage
     captureCIImage = [CIImage imageWithCVPixelBuffer:pixcelBuffer];
-    if (captureCIImage != nil){
-        
-        // CIImage -> CGImageRef
-        float pixelBufferWidth = CVPixelBufferGetWidth(pixcelBuffer);
-        float pixelBufferHeight = CVPixelBufferGetHeight(pixcelBuffer);
-        CGRect imageRect = CGRectMake(0, 0, pixelBufferWidth, pixelBufferHeight);
-        
-        CGImageRef cgImage = [[CIContext context] createCGImage:captureCIImage fromRect:imageRect];
-        if (cgImage != nil){
-            captureUIImage = [UIImage imageWithCGImage:cgImage];
-            CGImageRelease(cgImage);
-            if (captureUIImage == nil){
-                ret = NO;
-            }
-        }
-    }
-    else{
+    if (captureCIImage == nil){
         ret = NO;
     }
     
