@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8B0AAA791FAF52960009FBAE /* DetectTextArea.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B0AAA781FAF52960009FBAE /* DetectTextArea.m */; };
 		8B3799EC1FA8B417008219E2 /* DetectRectangle.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3799EB1FA8B417008219E2 /* DetectRectangle.m */; };
 		8B3799EF1FA8B428008219E2 /* TrackRectangle.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3799EE1FA8B428008219E2 /* TrackRectangle.m */; };
 		8B3799F21FA8B94C008219E2 /* VisionCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3799F11FA8B94C008219E2 /* VisionCommon.m */; };
@@ -21,6 +22,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8B0AAA771FAF52960009FBAE /* DetectTextArea.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetectTextArea.h; sourceTree = "<group>"; };
+		8B0AAA781FAF52960009FBAE /* DetectTextArea.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetectTextArea.m; sourceTree = "<group>"; };
 		8B3799EA1FA8B417008219E2 /* DetectRectangle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetectRectangle.h; sourceTree = "<group>"; };
 		8B3799EB1FA8B417008219E2 /* DetectRectangle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetectRectangle.m; sourceTree = "<group>"; };
 		8B3799ED1FA8B428008219E2 /* TrackRectangle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TrackRectangle.h; sourceTree = "<group>"; };
@@ -124,6 +127,8 @@
 				8B3799EB1FA8B417008219E2 /* DetectRectangle.m */,
 				8B3799ED1FA8B428008219E2 /* TrackRectangle.h */,
 				8B3799EE1FA8B428008219E2 /* TrackRectangle.m */,
+				8B0AAA771FAF52960009FBAE /* DetectTextArea.h */,
+				8B0AAA781FAF52960009FBAE /* DetectTextArea.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -199,6 +204,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B0AAA791FAF52960009FBAE /* DetectTextArea.m in Sources */,
 				8B3799EC1FA8B417008219E2 /* DetectRectangle.m in Sources */,
 				8B4C565B1FA58C4F00307B41 /* DrawRectView.m in Sources */,
 				8B3799F21FA8B94C008219E2 /* VisionCommon.m in Sources */,

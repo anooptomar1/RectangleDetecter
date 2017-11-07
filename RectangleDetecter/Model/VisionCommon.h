@@ -12,6 +12,7 @@
 
 @interface VisionCommon : NSObject
 
++ (NSMutableArray *)setQuadranglePointWithCGRect:(CGRect)rect frame:(CGRect)frame;
 + (NSMutableArray *)setQuadranglePointWithObservation:(VNRectangleObservation *)observation frame:(CGRect)frame;
 + (CGImagePropertyOrientation)getCGImagePropertyOrientation:(UIImageOrientation)orientation;
 

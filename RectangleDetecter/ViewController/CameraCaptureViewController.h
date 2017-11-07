@@ -18,8 +18,9 @@
     
 }
 
-@property (nonatomic, strong) IBOutlet UIImageView* imageView;
-@property (nonatomic, strong) DrawRectView* rectView;
+@property (nonatomic, retain) IBOutlet UIImageView* imageView;
+@property (nonatomic, retain) IBOutlet UISegmentedControl *segControl;
+@property (nonatomic, retain) IBOutlet DrawRectView* rectView;
 
 - (IBAction)tapped:(id)sender;
 

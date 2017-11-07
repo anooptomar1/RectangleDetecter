@@ -27,22 +27,15 @@
                 [VisionCommon getCGImagePropertyOrientation:[UIImage imageWithCIImage:ciImage].imageOrientation];
     VNImageRequestHandler *handler = [[VNImageRequestHandler alloc] initWithCIImage:ciImage orientation:orientation options:@{}];
     
-    VNDetectRectanglesRequest *rectRequest = [VNDetectRectanglesRequest new];
+    VNDetectRectanglesRequest *rectanglesRequest = [VNDetectRectanglesRequest new];
     
-    NSArray *requestArr = [NSArray arrayWithObject:rectRequest];
+    NSArray *requestArr = [NSArray arrayWithObject:rectanglesRequest];
     [handler performRequests:requestArr error:nil];
     
-    if (rectRequest != nil && rectRequest.results != nil){
-        NSMutableArray *rectArr = [NSMutableArray arrayWithArray:rectRequest.results];
-        if (rectArr != nil && [rectArr count] > 0){
-            
-            for (VNRectangleObservation *observation in rectArr){
-                if (observation != nil){
-                    pointArray = [VisionCommon setQuadranglePointWithObservation:observation frame:frame];
-                    _observation = observation;
-                    break;
-                }
-            }
+    for (_observation in rectanglesRequest.results){
+        if (_observation != nil){
+            pointArray = [VisionCommon setQuadranglePointWithObservation:_observation frame:frame];
+            break;
         }
     }
     

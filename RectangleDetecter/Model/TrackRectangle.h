@@ -12,6 +12,7 @@
 
 @property (nonatomic, assign) VNImageRequestHandler     *handler;
 @property (nonatomic, retain) VNSequenceRequestHandler  *sequenceHandler;
+@property (nonatomic, retain) VNRectangleObservation    *observation;
 
 - (NSArray *)trackRectanglePointWithCIImage:(CIImage *)ciImage frame:(CGRect)frame;
 - (void)setObservation:(VNRectangleObservation *)observation;

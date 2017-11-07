@@ -9,6 +9,7 @@
 #import "CameraCaptureViewController.h"
 #import "DetectRectangle.h"
 #import "TrackRectangle.h"
+#import "DetectTextArea.h"
 
 @interface CameraCaptureViewController (){
     
@@ -24,6 +25,7 @@
     VideoInput                  *videoInput;
     DetectRectangle             *detectRectangle;
     TrackRectangle              *trackRectangle;
+    DetectTextArea              *detectText;
 }
 
 - (void)setupAndStartAVCaptureSettion;
@@ -40,10 +42,13 @@
     
     _rectView = [[DrawRectView alloc] initWithFrame:_imageView.frame];
     [self.view addSubview:_rectView];
+    [self.view addSubview:_segControl];
     [self setupAndStartAVCaptureSettion];
     
     detectRectangle = [[DetectRectangle alloc] init];
-    trackRectangle = [[TrackRectangle alloc] init];
+    trackRectangle  = [[TrackRectangle alloc] init];
+    detectText      =[[DetectTextArea alloc] init];
+    
 }
 
 - (void)viewDidDisappear:(BOOL)animated{
@@ -73,28 +78,47 @@
     CIImage *resizeCIImage = [captureCIImage imageByApplyingTransform:CGAffineTransformMakeScale(scale.x,scale.y)];
     
     NSArray *pointArray = nil;
-    if (trackingFlag == NO){
-        
-        pointArray = [detectRectangle detectRectanglePointWithCIImage:resizeCIImage frame:_imageView.frame];
-    }
-    else{
-        
-        [trackRectangle setObservation:detectRectangle.observation];
-        pointArray = [trackRectangle trackRectanglePointWithCIImage:resizeCIImage frame:_imageView.frame];
-    }
     
-    if (pointArray != nil){
-        [_rectView setQuadranglePointArray:pointArray];
-    }
-    else{
-        [_rectView clearQuadranglePoint];
-    }
+    switch (_segControl.selectedSegmentIndex)
+    {
+        case kRectangleDetectMode:
+            pointArray = [detectRectangle detectRectanglePointWithCIImage:resizeCIImage frame:_imageView.frame];
+            [_rectView setQuadranglePointArray:pointArray];
+            break;
+        case kRectangleTrackingMode:
+        case kTextDetectMode:
+            trackRectangle.observation = detectRectangle.observation;
+            pointArray = [trackRectangle trackRectanglePointWithCIImage:resizeCIImage frame:_imageView.frame];
+            if (pointArray == nil){
+                pointArray = [detectRectangle detectRectanglePointWithCIImage:resizeCIImage frame:_imageView.frame];
+            }
+            [_rectView setQuadranglePointArray:pointArray];
+            
+            if (_segControl.selectedSegmentIndex == kTextDetectMode){
+                
+                CGFloat xPoint = fminf([[pointArray objectAtIndex:0] CGPointValue].x, [[pointArray objectAtIndex:3] CGPointValue].x);
+                CGFloat yPoint = fminf([[pointArray objectAtIndex:0] CGPointValue].y, [[pointArray objectAtIndex:1] CGPointValue].y);
+                CGFloat wPoint = fmaxf([[pointArray objectAtIndex:1] CGPointValue].x, [[pointArray objectAtIndex:2] CGPointValue].x) - xPoint;
+                CGFloat hPoint = fmaxf([[pointArray objectAtIndex:2] CGPointValue].y, [[pointArray objectAtIndex:3] CGPointValue].y) - yPoint;
 
+                CIImage *cropCIImage = [resizeCIImage imageByCroppingToRect:CGRectMake(xPoint, yPoint, wPoint, hPoint)];
+                    
+                pointArray = [detectText detectTextAreaWithCIImage:cropCIImage frame:cropCIImage.extent];
+                [_rectView setTextsPointArray:pointArray];
+            }
+            break;
+        default:
+            break;
+    }
 }
 
 #pragma mark ----- Action Method -----
 - (IBAction)tapped:(id)sender{
     
+}
+
+- (IBAction)segChange:(id)sende{
+    _rectView.appMode = _segControl.selectedSegmentIndex;
 }
 
 #pragma mark ----- Private Method -----
@@ -104,15 +128,4 @@
     [videoInput startCapture];
 }
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    if (trackingFlag){
-        trackingFlag = NO;
-    }
-    else{
-        trackingFlag = YES;
-    }
-    
-    _rectView.trackingFlag = trackingFlag;
-}
 @end

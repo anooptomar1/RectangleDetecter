@@ -8,10 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSUInteger, kAppMode) {
+    kRectangleDetectMode,
+    kRectangleTrackingMode,
+    kTextDetectMode
+};
+
 @interface DrawRectView : UIView
 
-@property (nonatomic, assign) BOOL trackingFlag;
+@property (nonatomic, assign) kAppMode appMode;
+
 - (void)setQuadranglePointArray:(NSArray *)array;
+- (void)setTextsPointArray:(NSArray *)array;
 - (void)clearQuadranglePoint;
 
 @end

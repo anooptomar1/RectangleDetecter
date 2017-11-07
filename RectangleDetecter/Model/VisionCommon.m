@@ -10,11 +10,32 @@
 
 @implementation VisionCommon
 
++ (NSMutableArray *)setQuadranglePointWithCGRect:(CGRect)rect frame:(CGRect)frame{
+    
+    NSMutableArray *pointArr = [NSMutableArray array];
+    
+    CGPoint setTopLeft      = CGPointMake(rect.origin.x * frame.size.width,
+                                          rect.origin.y * frame.size.height);
+    CGPoint setTopRight     = CGPointMake((rect.origin.x + rect.size.width) * frame.size.width,
+                                           rect.origin.y * frame.size.height);
+    CGPoint setBottomRight  = CGPointMake((rect.origin.x + rect.size.width)  * frame.size.width,
+                                          (rect.origin.y + rect.size.height) * frame.size.height);
+    CGPoint setBottomLeft   = CGPointMake(rect.origin.x * frame.size.width,
+                                          (rect.origin.y + rect.size.height) * frame.size.height);
+    
+    [pointArr addObject:[NSValue valueWithCGPoint:setTopLeft]];
+    [pointArr addObject:[NSValue valueWithCGPoint:setTopRight]];
+    [pointArr addObject:[NSValue valueWithCGPoint:setBottomRight]];
+    [pointArr addObject:[NSValue valueWithCGPoint:setBottomLeft]];
+    
+    return pointArr;
+}
+
 + (NSMutableArray *)setQuadranglePointWithObservation:(VNRectangleObservation *)observation frame:(CGRect)frame{
     
     NSMutableArray *pointArr = [NSMutableArray array];
     
-    CGPoint setTopLeft      = CGPointMake(observation.topLeft.x *frame.size.width,
+    CGPoint setTopLeft      = CGPointMake(observation.topLeft.x * frame.size.width,
                                           (1 - observation.topLeft.y) * frame.size.height);
     CGPoint setTopRight     = CGPointMake(observation.topRight.x *frame.size.width,
                                           (1 - observation.topRight.y) * frame.size.height);

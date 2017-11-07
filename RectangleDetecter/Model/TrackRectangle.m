@@ -8,10 +8,7 @@
 
 #import "TrackRectangle.h"
 
-@interface TrackRectangle () {
-    VNRectangleObservation  *rectangleObservation;
-}
-
+@interface TrackRectangle ()
 @end
 
 @implementation TrackRectangle
@@ -21,7 +18,7 @@
     self = [super init];
     if (self) {
         _sequenceHandler = [VNSequenceRequestHandler new];
-        rectangleObservation = nil;
+        _observation = nil;
     }
     return self;
 }
@@ -30,7 +27,7 @@
     
     NSArray *pointArray = nil;
     
-    VNTrackRectangleRequest *trackRequest = [[VNTrackRectangleRequest alloc] initWithRectangleObservation:rectangleObservation];
+    VNTrackRectangleRequest *trackRequest = [[VNTrackRectangleRequest alloc] initWithRectangleObservation:_observation];
     trackRequest.trackingLevel = VNRequestTrackingLevelAccurate;
     
     NSArray *trackRequestArray = [NSArray arrayWithObject:trackRequest];
@@ -39,17 +36,12 @@
     if (trackRequest != nil && trackRequest.results != nil){
         NSMutableArray *rectArray = [NSMutableArray arrayWithArray:trackRequest.results];
         
-        for (VNRectangleObservation *observation in rectArray){
-            pointArray = [VisionCommon setQuadranglePointWithObservation:observation frame:frame];
-            rectangleObservation = observation;
+        for (_observation in rectArray){
+            pointArray = [VisionCommon setQuadranglePointWithObservation:_observation frame:frame];
             break;
         }
     }
     return pointArray;
-}
-
-- (void)setObservation:(VNRectangleObservation *)observation{
-    rectangleObservation = observation;
 }
 
 @end
