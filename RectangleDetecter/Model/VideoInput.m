@@ -42,7 +42,7 @@
     _mySession = [[AVCaptureSession alloc] init];
     [_mySession addInput:inputDevice];
     [_mySession addOutput:outputData];
-    _mySession.sessionPreset = AVCaptureSessionPreset1920x1080;
+    _mySession.sessionPreset = AVCaptureSessionPreset3840x2160;
     
     AVCaptureConnection *videoConnection = nil;
     
@@ -67,10 +67,11 @@
 
 - (void)captureOutput:(AVCaptureOutput *)output didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection{
     
+    
+    
     if ([self convertSampleBufferToImage:sampleBuffer]){
         [_videoInputDelegate getVideoCaptureCIImage:captureCIImage];
     }
-    
 }
 
 - (BOOL)convertSampleBufferToImage:(CMSampleBufferRef)sampleBuffer{
